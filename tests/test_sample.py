@@ -8,6 +8,10 @@ import unittest
 
 from nlp_sample.analysis import AgentCore
 from nlp_sample.workflow import ConversationSystem
+from nlp_sample.review import (
+    FIRST_QUESTION, CONFIRMATION, READY_RESPONSE,
+    build_review_system, language_limits, walkthrough,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,7 +32,7 @@ class OriginalSourceTests(unittest.TestCase):
 
     def test_selected_methods_match_published_provenance(self):
         manifest = json.loads((ROOT / "docs/SOURCE_MAP.json").read_text("utf8"))
-        self.assertEqual(len(manifest["selection"]), 8)
+        self.assertEqual(len(manifest["selection"]), 10)
         for entry in manifest["selection"]:
             with self.subTest(method=entry["method"]):
                 source = (ROOT / entry["published_file"]).read_text("utf8")
@@ -88,6 +92,84 @@ class OriginalSourceTests(unittest.TestCase):
         for entry in manifest["agent_configs"]:
             config = json.loads((ROOT / entry["published_file"]).read_text("utf8"))
             self.assertEqual(len(config["instrucciones"]), len(entry["instruction_indices_zero_based"]))
+
+    def test_context_prompt_retains_confirmation_condition(self):
+        instructions = self.agent.config["instrucciones"]
+        marker = instructions.index("Include at the end: 'PROCESANDO_CONSULTA'")
+        self.assertIn("user CONFIRMS", instructions[marker - 1])
+
+    def test_excluded_sql_boundary_is_explicit(self):
+        sql = AgentCore(str(ROOT / "prompts/sql_agent.json"), self.fixture, tools=[object()])
+        with self.assertRaisesRegex(NotImplementedError, "private SQL executor"):
+            sql.invoke(READY_RESPONSE)
+
+
+class OriginalOrchestrationTests(unittest.TestCase):
+    def test_clarification_pauses_before_sql_and_analyst(self):
+        system, refinement, sql, analyst, events = build_review_system()
+        result = system.process(FIRST_QUESTION, verbose=False)
+        self.assertTrue(result["necesita_input"])
+        self.assertFalse(result["conversation_complete"])
+        self.assertEqual(sql.inputs, [])
+        self.assertEqual(analyst.prompts, [])
+        self.assertEqual(events, ["refinement_model_fixture"])
+        self.assertEqual(len(refinement.prompts), 1)
+
+    def test_confirmed_turn_transfers_exact_agent_output(self):
+        system, refinement, sql, analyst, events = build_review_system()
+        system.process(FIRST_QUESTION, verbose=False)
+        result = system.process(CONFIRMATION, verbose=False)
+        self.assertTrue(result["success"])
+        self.assertTrue(result["conversation_complete"])
+        self.assertFalse(result["necesita_input"])
+        self.assertEqual(sql.inputs, [READY_RESPONSE])
+        self.assertIn(FIRST_QUESTION, refinement.prompts[1])
+        self.assertIn(CONFIRMATION, refinement.prompts[1])
+        self.assertIn("review_fixture", analyst.prompts[0])
+        self.assertEqual(events, ["refinement_model_fixture", "refinement_model_fixture",
+                                  "sql_boundary_fixture", "analyst_model_fixture"])
+
+    def test_completion_clears_context_and_retains_trace(self):
+        system, _, _, _, _ = build_review_system()
+        system.process(FIRST_QUESTION, verbose=False)
+        system.process(CONFIRMATION, verbose=False)
+        self.assertEqual(system.conversation_context, [])
+        self.assertEqual(len(system.history), 1)
+        self.assertIn("agent3_analisis", system.history[0]["flujo_completo"])
+
+    def test_sql_error_stops_before_analyst(self):
+        system, _, sql, analyst, events = build_review_system(sql_error=True)
+        system.process(FIRST_QUESTION, verbose=False)
+        result = system.process(CONFIRMATION, verbose=False)
+        self.assertFalse(result["success"])
+        self.assertEqual(result["agent"], "Agent 2")
+        self.assertEqual(len(sql.inputs), 1)
+        self.assertEqual(analyst.prompts, [])
+        self.assertNotIn("analyst_model_fixture", events)
+
+    def test_model_exception_is_reported_by_original_error_path(self):
+        from unittest.mock import patch
+        system, refinement, _, _, _ = build_review_system()
+        with patch.object(refinement, "invoke", side_effect=RuntimeError("Synthetic failure")):
+            result = system.process(FIRST_QUESTION, verbose=False)
+        self.assertFalse(result["success"])
+        self.assertEqual(result["agent"], "System")
+        self.assertEqual(result["metadata"]["error_type"], "RuntimeError")
+
+    def test_walkthrough_reports_fixture_origins(self):
+        report = walkthrough()
+        self.assertEqual(report["live_model_calls"], 0)
+        self.assertEqual(report["database_calls"], 0)
+        self.assertTrue(report["second_turn"]["sql_received_exact_agent1_output"])
+        self.assertTrue(report["second_turn"]["context_cleared_after_completion"])
+        self.assertIn("not an observed model answer", report["second_turn"]["response_origin"])
+
+    def test_known_language_limitations_are_characterized_not_hidden(self):
+        report = language_limits()
+        self.assertEqual(len(report["cases"]), 4)
+        observed = [case["observed_original_behavior"] for case in report["cases"]]
+        self.assertEqual(observed, ["subpartida", None, 10, True])
+        self.assertTrue(all(not case["matches_intended_interpretation"] for case in report["cases"]))
 
 
 if __name__ == "__main__":
