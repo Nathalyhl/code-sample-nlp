@@ -54,13 +54,11 @@ The worked example starts with `Quiero el top 5 de productos por valor FOB.` and
 
 The [walkthrough](docs/WALKTHROUGH.md) explains this sequence without requiring the reader to run anything. For a reproducible control-flow check, the review harness supplies explicitly scripted model responses and a SQL contract placeholder. **It makes no live model or database calls and reports no trade findings.** The fixture verifies routing and state, not model quality or database correctness.
 
-## Decisions, limitations and research questions
+## Design approach
 
-The implementation separates refinement, SQL work and explanation. That makes responsibilities inspectable, while introducing questions about model-output contracts, ambiguity and error propagation.
+The project uses three specialized agents to refine user questions, generate SQL queries, and explain results. This sample highlights conversational context handling, agent coordination, and the connection between natural-language requests and structured data. Implementation details and considerations for further development are provided in the [review notes](docs/RESEARCH_NOTES.md).
 
-Four executed diagnostic examples reveal limits in the unchanged lexical helpers: a department ranking can map to products; averaging can lose the country grouping; `primeros 5` can default to 10; and a negated ranking can be treated as affirmative. The [review notes](docs/RESEARCH_NOTES.md) explain these cases and distinguish observed behavior from intended interpretations. They are retained as limitations, not presented as solved problems or a benchmark score.
-
-## Optional reproducibility checks
+## Running the sample (optional)
 
 Python 3.11 or later; standard library only:
 
