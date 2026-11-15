@@ -1,0 +1,183 @@
+{
+  "origin": "Joint thesis source snapshot",
+  "selection": [
+    {
+      "published_file": "nlp_sample/analysis.py",
+      "class": "AgentCore",
+      "method": "__init__",
+      "source_file": "TDG/AgentCore/src/agent_core.py",
+      "source_start_line": 17,
+      "source_end_line": 49,
+      "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
+      "original_method_sha256": "064e9fa24e7fcf9ee746553c7dea9b8be0dff81c673ed822dfb3e6464f90e8af",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "7335389d30072db49052d122964f15039ad16882671e29d0cd3d256ad196a71f"
+    },
+    {
+      "published_file": "nlp_sample/analysis.py",
+      "class": "AgentCore",
+      "method": "_build_prompt_from_json",
+      "source_file": "TDG/AgentCore/src/agent_core.py",
+      "source_start_line": 51,
+      "source_end_line": 98,
+      "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
+      "original_method_sha256": "290d60eec8ecffc695d55f625fd7b8edda6799db8e74fbd28122d55d43be1e14",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "404954b869d309a5fb4368af2710c3f98f2ebdf1986de60f5d20d5fe6e81aadd"
+    },
+    {
+      "published_file": "nlp_sample/analysis.py",
+      "class": "AgentCore",
+      "method": "invoke",
+      "source_file": "TDG/AgentCore/src/agent_core.py",
+      "source_start_line": 100,
+      "source_end_line": 134,
+      "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
+      "original_method_sha256": "64e10c5f899ef5b394412d5fa7e8022b24a84707710d96896d40c65e20b576b1",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "705ae8890d9efb52dcb4ea132c5a63b28e6cc0c026d043e849e3ee05631d0845"
+    },
+    {
+      "published_file": "nlp_sample/analysis.py",
+      "class": "AgentCore",
+      "method": "_analizar_contexto",
+      "source_file": "TDG/AgentCore/src/agent_core.py",
+      "source_start_line": 291,
+      "source_end_line": 346,
+      "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
+      "original_method_sha256": "8b56c483b7d7987a26a62cc2c9c09227097e902edb76e1a3c7d750ea247c8b6d",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "7a50bfb56acbc519e59712ae2cc6664abbf86e847590ce1bb7c6e4227aef1b91"
+    },
+    {
+      "published_file": "nlp_sample/analysis.py",
+      "class": "AgentCore",
+      "method": "_detectar_agrupacion",
+      "source_file": "TDG/AgentCore/src/agent_core.py",
+      "source_start_line": 348,
+      "source_end_line": 393,
+      "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
+      "original_method_sha256": "5813c29b357e90eeb10524b4d7e0bae701d4d9f41bdf9863a68ed307ab5dbd9c",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "8d94c496c76425f64aefb2a1b43114aa0291251f4d7b96504d06311324273438"
+    },
+    {
+      "published_file": "nlp_sample/workflow.py",
+      "class": "ConversationSystem",
+      "method": "__init__",
+      "source_file": "TDG/AgentCore/src/conversation_system.py",
+      "source_start_line": 19,
+      "source_end_line": 35,
+      "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
+      "original_method_sha256": "8bb0c9d248fa4f7fdfc8a783efcce6918b6419c1c0b5e6ce18f50c2e25766d1e",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "5d359a904406717fce3f0e05372e7339f3929d7dfdb9f8c8fb59b7ba9b7734a9"
+    },
+    {
+      "published_file": "nlp_sample/workflow.py",
+      "class": "ConversationSystem",
+      "method": "_construir_contexto_agent1",
+      "source_file": "TDG/AgentCore/src/conversation_system.py",
+      "source_start_line": 37,
+      "source_end_line": 83,
+      "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
+      "original_method_sha256": "17e7ef44ae8ecde9fc5d55e989e6adaafae0c8d1e2dfda2d9b236e6fcc8af0fd",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "6abace2e5fed2b57b5bf17766b8c3a3387eb793fc3f20e0de0c512bacc8a74a5"
+    },
+    {
+      "published_file": "nlp_sample/workflow.py",
+      "class": "ConversationSystem",
+      "method": "_agent_necesita_input",
+      "source_file": "TDG/AgentCore/src/conversation_system.py",
+      "source_start_line": 85,
+      "source_end_line": 108,
+      "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
+      "original_method_sha256": "9d3cb23399b968f67371a2f06d7d24a92e3b9d52d172eca2250db4d734129301",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_ast_sha256": "25fa9e53c5329ea7d50f12f4fbb64316e2cd5c36fd8881c70a01e8cee7411f5a"
+    }
+  ],
+  "agent_configs": [
+    {
+      "published_file": "prompts/context.txt",
+      "source_file": "TDG/AgentCore/Agents/agente1.json",
+      "source_file_sha256": "d0a88e70ec8110cc7b698da9cf6a8135bf83f31836d475aa1c6166321ce14f1c",
+      "retained_fields": [
+        "nombre (translated)",
+        "tipo (unchanged)",
+        "objetivo (translated)"
+      ],
+      "instruction_indices_zero_based": [
+        8,
+        9,
+        11,
+        12,
+        24,
+        39,
+        41,
+        42,
+        43,
+        44,
+        45,
+        47,
+        48,
+        49,
+        50,
+        51,
+        149,
+        200,
+        201
+      ],
+      "selection_note": "Selected original instructions translated to English; remaining instructions and examples omitted."
+    },
+    {
+      "published_file": "prompts/sql_agent.json",
+      "source_file": "TDG/AgentCore/Agents/agente2.json",
+      "source_file_sha256": "d6310e5b4a493ce60150fed7f1e09dce4b25bc0f13b97010ff984599da76a283",
+      "retained_fields": [
+        "nombre (translated)",
+        "tipo (unchanged)",
+        "objetivo (translated)"
+      ],
+      "instruction_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "selection_note": "Selected original instructions translated to English; remaining instructions and examples omitted."
+    },
+    {
+      "published_file": "prompts/analyst_agent.json",
+      "source_file": "TDG/AgentCore/Agents/agente3.json",
+      "source_file_sha256": "2552bd53f4faa6a008863680e17999172101bb4fbdaa1ac5bcc173d1e27eb2d5",
+      "retained_fields": [
+        "nombre (translated)",
+        "tipo (unchanged)",
+        "objetivo (translated)"
+      ],
+      "instruction_indices_zero_based": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7
+      ],
+      "selection_note": "Selected original instructions translated to English; remaining instructions and examples omitted."
+    }
+  ],
+  "editorial_policy": "Selected original methods; formatting normalized, comments omitted, docstrings and selected presentation strings translated to English. Legacy identifiers, lexical patterns, protocol markers and executable control flow retained."
+}

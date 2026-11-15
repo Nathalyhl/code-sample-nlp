@@ -1,58 +1,46 @@
 # Project brief
 
-## Problem and contribution
+## Research context
 
-The master's project, **Optimization of export microdata with an automated system and an LLM-based multi-agent query chatbot**, connected a data pipeline with a natural-language interface. Its institutional context was the analysis of Colombian exports at the Cámara de Comercio de Cali. The source records contain structured trade attributes such as dates, destinations, product classifications, values and weights.
+The master's project concerned the optimization of Colombian export microdata through an automated data system and an LLM-based multi-agent query chatbot. Its institutional setting was economic analysis at the Cámara de Comercio de Cali, where historical files needed to be prepared and consulted efficiently.
 
-The project treated reliable data preparation and reliable question interpretation as connected problems. A correct natural-language interpretation is useful only if its fields map to a coherent schema; a well-maintained warehouse becomes more accessible when analysts can ask questions conversationally.
+Nathaly Henao Lugo participated across the data-engineering and chatbot phases. The original research was authored jointly with Alejandro Perez Lugo and Mauricio Guzmán Arango. This portfolio presents selected evidence from that work, while keeping its complete source and institutional materials separate.
 
-Nathaly Henao Lugo contributed across data engineering, orchestration and the chatbot workflow. The research was a joint project with Alejandro Perez Lugo and Mauricio Guzmán Arango. This portfolio preserves that distinction between individual participation and joint authorship.
+## Data engineering phase
 
-## Complete system architecture
+The broader project combined Python data preparation, Apache Airflow task orchestration and AWS storage/query services. Its architecture followed monthly export files through transformation and storage toward an analytical warehouse, using S3, Parquet, Glue and Redshift.
 
-### Data preparation and orchestration
+The work involved understanding historical variables, arranging a coherent analytical schema, managing processing dates and coordinating dependent tasks. This data infrastructure supplied the setting in which the conversational interface could answer meaningful questions.
 
-The data workflow acquires monthly DIAN files, checks their structure, converts them into a consistent analytical representation and coordinates storage and loading. Python supplies the transformation logic, Airflow coordinates tasks, and the AWS architecture uses S3, Glue and Redshift.
+Only the architecture is described here. The full ingestion pipeline, warehouse configuration, Glue implementation, institutional rows and deployment settings are outside this sample. This repository does not claim to have independently verified every cloud component described in the thesis.
 
-Important engineering concerns include logical processing dates, schema consistency, null values, duplicate handling, reproducible transformations, task failures and repeated loads. These concerns establish the context for the NLP component without requiring the reviewer to receive the complete pipeline implementation.
+## Conversational NLP phase
 
-### Conversational understanding
+The chatbot assigned complementary responsibilities to three agents:
 
-The first agent interprets the user's request and gathers the information required for analysis. Period and metric are essential. Optional information may include destination, origin, product or exporter, depending on the complete system's schema. Missing information triggers a clarification turn.
+1. **Query refinement:** identify the user's period and requested metric, collect optional filters and ask for confirmation before progressing.
+2. **SQL work:** combine structured parameters with the interpreted natural-language request to prepare and execute an analytical query.
+3. **Results interpretation:** explain the returned data for a nontechnical reader.
 
-The key intermediate artifact is a structured representation of meaning. Separating that representation from SQL makes it possible to inspect what the system understood before it accesses data.
+The selected original Python methods show how agent configuration becomes a prompt, how a model is invoked, how rankings and grouping dimensions are detected, and how previous conversation turns are supplied to the first agent. Selected instructions from all three original configuration files explain the intended division of work.
 
-### Query generation and execution
+## What was selected
 
-The second agent maps the structured request to a SQL query. The maintained application validates the query independently at the database boundary and uses a read-only transaction. This distinction matters: syntactically valid model output can still express the wrong question, so meaning and executable behavior need separate checks.
+The eight methods are selected from two original source files, not taken from a newly invented language analyzer. Their names and control flow remain intact. English presentation edits are recorded in the source map. The complete production methods that perform SQL execution and drive the full three-agent chain are not included.
 
-The local sample uses a restricted SQL compiler with bound values and an in-memory, query-only SQLite database. This enables a reviewer to trace question interpretation into actual executed results without an AWS account. It demonstrates the boundary design rather than reproducing the complete Redshift deployment.
+This boundary allows a reviewer to inspect representative implementation decisions without receiving the complete platform. The reviewer can see both the wider architecture and concrete code for language-related operations.
 
-### Results interpretation
+## Engineering decisions and tradeoffs
 
-The third agent in the wider project converts query results into a comprehensible response. Its evidence is the validated question and returned rows. Explanations should preserve units, distinguish totals from rankings and avoid unsupported market narratives.
-
-The sample uses deterministic answer formatting to make this last stage reproducible. It demonstrates evidence flow; it does not measure an LLM's ability to generate accurate prose.
-
-## Selected implementation decisions
-
-| Decision | Purpose | Tradeoff |
+| Decision in the original code | Purpose | Limit to discuss |
 | --- | --- | --- |
-| Explicit semantic object | Inspect and evaluate interpretation before SQL | Only supported meanings can be represented |
-| Separate analyzer and workflow | Compare language backends without replacing execution | Backend correctness still requires empirical evaluation |
-| Clarification and rejection outcomes | Make uncertainty observable | Conservative rules reduce coverage |
-| Per-conversation state | Resolve follow-ups without sharing another user's context | A deployed service must enforce session ownership |
-| Parameterized query construction | Keep values separate from SQL structure | This sample supports a limited query vocabulary |
-| Synthetic data and a local backend | Let reviewers reproduce the workflow safely | Institutional data quality and cloud behavior are not exercised |
+| Agent instructions in JSON | Separate role instructions from invocation code | Prompt quality still needs empirical evaluation |
+| A shared prompt-construction method | Keep configuration sections organized | Selected configurations omit parts of the full setup |
+| Explicit conversational history | Let the model reuse information from earlier turns | Long assistant messages are truncated; history is not unbounded model memory |
+| Response markers | Distinguish clarification from progression | A question-mark fallback and substring matching are heuristic |
+| Context and grouping helpers | Supply query-shaping cues for rankings and averages | Vocabulary and defaults can misinterpret ambiguous requests |
+| Separate agent roles | Organize refinement, SQL work and explanation | Responsibility separation alone cannot ensure correct answers |
 
-## Relationship between the thesis and this sample
+## Scope of the evidence
 
-The thesis documents the full system and its development. The maintained private project contains a later English revision and engineering checks. This repository is a new, deliberately selected adaptation for code review.
-
-The semantic extraction, conversation flow and separation of agents reflect the broader project. The offline rules, small SQLite dataset and diagnostic evaluation were prepared specifically for this sample. Their measured results belong to this sample alone.
-
-The thesis discusses additional components such as vector memory and authentication. Those features are not demonstrated here, and the sample does not claim to verify every component described in the thesis. Historical timing claims are also excluded from this repository's evaluation.
-
-## What a reviewer can assess
-
-A reviewer can inspect how the code normalizes text, represents intent, handles missing information, preserves explicit conversational context, validates model output, constructs a bounded database operation and traces the final answer to returned rows. The evaluation retains unsuccessful paraphrases, allowing discussion of the difference between implementation reliability and linguistic generalization.
+The original project applied pretrained LLMs; it did not involve training a new foundation model. This sample demonstrates source design and selected helper behavior. It does not assert a new NLP benchmark, deployment performance or independently confirmed thesis timing measurements.
