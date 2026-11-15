@@ -31,11 +31,12 @@ class OriginalSourceTests(unittest.TestCase):
         self.assertEqual(len(manifest["selection"]), 8)
         for entry in manifest["selection"]:
             with self.subTest(method=entry["method"]):
-                tree = ast.parse((ROOT / entry["published_file"]).read_text("utf8"))
+                source = (ROOT / entry["published_file"]).read_text("utf8")
+                tree = ast.parse(source)
                 cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == entry["class"])
                 method = next(n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == entry["method"])
-                digest = hashlib.sha256(ast.dump(method, include_attributes=False).encode("utf8")).hexdigest()
-                self.assertEqual(digest, entry["published_ast_sha256"])
+                digest = hashlib.sha256(ast.get_source_segment(source, method).encode("utf8")).hexdigest()
+                self.assertEqual(digest, entry["published_method_sha256"])
 
     def test_prompt_uses_selected_original_config_fields(self):
         self.assertIn("Query refinement agent", self.agent.system_prompt)
