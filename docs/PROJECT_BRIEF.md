@@ -22,11 +22,11 @@ The chatbot assigned complementary responsibilities to three agents:
 2. **SQL work:** combine structured parameters with the interpreted natural-language request to prepare and execute an analytical query.
 3. **Results interpretation:** explain the returned data for a nontechnical reader.
 
-The selected original Python methods show how agent configuration becomes a prompt, how a model is invoked, how rankings and grouping dimensions are detected, and how previous conversation turns are supplied to the first agent. Selected instructions from all three original configuration files explain the intended division of work.
+The selected original Python methods show how agent configuration becomes a prompt, how a model is invoked, how rankings and grouping dimensions are detected, and how previous conversation turns are supplied to the first agent, and how the original controller pauses, transfers outputs and completes the chain. Selected instructions from all three original configuration files explain the intended division of work.
 
 ## What was selected
 
-The eight methods are selected from two original source files, not taken from a newly invented language analyzer. Their names and control flow remain intact. English presentation edits are recorded in the source map. The complete production methods that perform SQL execution and drive the full three-agent chain are not included.
+The ten methods are selected from two original source files, not taken from a newly invented language analyzer. Their names and control flow remain intact. English presentation edits are recorded in the source map. The original method driving the three-agent chain is included. Complete database execution remains outside the sample and is represented by an explicit review-only boundary.
 
 This boundary allows a reviewer to inspect representative implementation decisions without receiving the complete platform. The reviewer can see both the wider architecture and concrete code for language-related operations.
 

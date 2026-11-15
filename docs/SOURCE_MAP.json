@@ -11,7 +11,7 @@
       "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
       "original_method_sha256": "064e9fa24e7fcf9ee746553c7dea9b8be0dff81c673ed822dfb3e6464f90e8af",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "7878011b104217c1295d0b21d47777d7009bef808510d403011ca0a7fef0ea76"
+      "published_method_sha256": "5fbaa7bf08e501ac227d0a5ac306efb702d2e1e0080e64f7d7c3c0b89d101f08"
     },
     {
       "published_file": "nlp_sample/analysis.py",
@@ -23,7 +23,7 @@
       "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
       "original_method_sha256": "290d60eec8ecffc695d55f625fd7b8edda6799db8e74fbd28122d55d43be1e14",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "83def41fa424b7808942874eeab91c63d2ea9e7f77d80def20024bd26af46546"
+      "published_method_sha256": "5ef7b64b5561e09979c2d449aa72f3034e20309126f9af145ad280713a8fa119"
     },
     {
       "published_file": "nlp_sample/analysis.py",
@@ -35,7 +35,7 @@
       "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
       "original_method_sha256": "64e10c5f899ef5b394412d5fa7e8022b24a84707710d96896d40c65e20b576b1",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "e72a85b5e09e4fb9a7d5f7f2ec9efc87cda27245b2b4c6d13de259aca5b05765"
+      "published_method_sha256": "4943f6e0f7fdab2ed70388e5ad98198a1b596592d0f5f8ca1998f01c7d88fe15"
     },
     {
       "published_file": "nlp_sample/analysis.py",
@@ -47,7 +47,7 @@
       "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
       "original_method_sha256": "8b56c483b7d7987a26a62cc2c9c09227097e902edb76e1a3c7d750ea247c8b6d",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "3164b24ce6c71599ba562857b6a95d6cef0213a2471a8bbc6906f09be3cee644"
+      "published_method_sha256": "bbc89e47fc01d355aafb5fa3b73003a9171e1c9c460e8a026c5944709dbd0b80"
     },
     {
       "published_file": "nlp_sample/analysis.py",
@@ -59,7 +59,7 @@
       "source_file_sha256": "03ac698f094f6e9579e575af8d55aedd6e46b8270c402832891f5086819147fc",
       "original_method_sha256": "5813c29b357e90eeb10524b4d7e0bae701d4d9f41bdf9863a68ed307ab5dbd9c",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "4cb3ac2933aff4f09cbbbd9f8c083684848591fbccdc2d800d2c430e87b44983"
+      "published_method_sha256": "9d7e0b6667ba524c2b9497fb3850eb0e6912b553c378c8bc1ff5b84ffdbbeb46"
     },
     {
       "published_file": "nlp_sample/workflow.py",
@@ -71,7 +71,7 @@
       "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
       "original_method_sha256": "8bb0c9d248fa4f7fdfc8a783efcce6918b6419c1c0b5e6ce18f50c2e25766d1e",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "c689bc346bb8ca72fce273a86e0870bb2bc018f5549f65ba6d11cc183b32aad3"
+      "published_method_sha256": "ca41184a51a37d7471b98b5b6ae0295c675ec6a225dd4494f48db7134bcccf6d"
     },
     {
       "published_file": "nlp_sample/workflow.py",
@@ -83,7 +83,7 @@
       "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
       "original_method_sha256": "17e7ef44ae8ecde9fc5d55e989e6adaafae0c8d1e2dfda2d9b236e6fcc8af0fd",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "709fe99fa9ba2ab905d773cc24548191fec42d1546c693dca6c1a48c98788186"
+      "published_method_sha256": "399d267520fb2ec7962db0251d2f1bbff734e403a5aa7481ea100678e20c68b9"
     },
     {
       "published_file": "nlp_sample/workflow.py",
@@ -95,7 +95,31 @@
       "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
       "original_method_sha256": "9d3cb23399b968f67371a2f06d7d24a92e3b9d52d172eca2250db4d734129301",
       "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
-      "published_method_sha256": "0dd6aae640e4a7dff7d04e3c2513f08182457bafb11d5db98c81e6213e3ae06a"
+      "published_method_sha256": "978eb8098c5d3c65a3d694f98bdb904c3d1dab81c2cabcf2e13f7b99d3296fb1"
+    },
+    {
+      "published_file": "nlp_sample/workflow.py",
+      "class": "ConversationSystem",
+      "method": "process",
+      "source_file": "TDG/AgentCore/src/conversation_system.py",
+      "source_start_line": 110,
+      "source_end_line": 297,
+      "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
+      "original_method_sha256": "3b36acf4bcec2e2fcb00b3c2b90f3840911613e01bb3762a87890db2b225fb69",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_method_sha256": "9ce3142bfce86a68e4465257056c0cbb63902be799ecc22c52751f08592354a0"
+    },
+    {
+      "published_file": "nlp_sample/workflow.py",
+      "class": "ConversationSystem",
+      "method": "_calcular_tiempo_total",
+      "source_file": "TDG/AgentCore/src/conversation_system.py",
+      "source_start_line": 299,
+      "source_end_line": 302,
+      "source_file_sha256": "588e0626c30cd135101d5b445fce26f4c75d719861d8744703477f2a4874da55",
+      "original_method_sha256": "14545c94fc9ad47909679519c5ea945c9d9cf5fbf04c89eab4c22f0c386d869b",
+      "fidelity_check": "AST control flow and identifiers match after reversing documented text translations and removing docstrings",
+      "published_method_sha256": "3aa09f6f078ae910068c98aaaa49f2b6548416d89fe06794f1c6b5f50f0b8f06"
     }
   ],
   "agent_configs": [
@@ -113,6 +137,10 @@
         9,
         11,
         12,
+        19,
+        20,
+        21,
+        23,
         24,
         39,
         41,
@@ -179,5 +207,12 @@
       "selection_note": "Selected original instructions translated to English; remaining instructions and examples omitted."
     }
   ],
-  "editorial_policy": "Selected original methods; formatting normalized, comments omitted, docstrings and selected presentation strings translated to English. Legacy identifiers, lexical patterns, protocol markers and executable control flow retained."
+  "editorial_policy": "Selected original methods; formatting normalized, comments omitted, docstrings and selected presentation strings translated to English. Legacy identifiers, lexical patterns, protocol markers and executable control flow retained.",
+  "review_scaffolding": [
+    "nlp_sample/review.py",
+    "nlp_sample/__main__.py",
+    "nlp_sample/support.py",
+    "AgentCore._invoke_with_sql_execution (explicit exclusion guard)",
+    "tests/test_sample.py"
+  ]
 }
