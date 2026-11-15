@@ -1,68 +1,53 @@
-"""Connect semantic text analysis to parameterized SQL and grounded answers."""
-import csv
-from pathlib import Path
-import sqlite3
-
-from .analysis import Query, RuleAnalyzer
-
-ROOT = Path(__file__).resolve().parents[1]
+'Selected original thesis methods for code review. See docs/SOURCE_MAP.json.\nThe remaining production methods and infrastructure are intentionally omitted.'
+from .analysis import AgentCore
+from .support import log_message
 
 
-def build_query(query: Query) -> tuple[str, tuple]:
-    # Only validated enum values select SQL structure; user text is never SQL.
-    aggregates = {"fob_usd": "SUM(fob_usd)", "net_weight_kg": "SUM(net_weight_kg)", "operations": "COUNT(*)"}
-    aggregate = aggregates[query.metric]
-    projection = f"destination, {aggregate} AS value" if query.operation == "ranking" else f"{aggregate} AS value"
-    sql = f"SELECT {projection} FROM exports WHERE year BETWEEN ? AND ?"
-    params = [query.start_year, query.end_year]
-    if query.destination:
-        sql += " AND destination = ?"
-        params.append(query.destination)
-    if query.operation == "ranking":
-        sql += " GROUP BY destination ORDER BY value DESC, destination ASC LIMIT ?"
-        params.append(query.top_k)
-    return sql, tuple(params)
+class ConversationSystem:
+    def __init__(self, agent1: AgentCore, agent2: AgentCore, agent3: AgentCore):
+        """Initialize the three-agent conversation state."""
+        self.agent1 = agent1
+        self.agent2 = agent2
+        self.agent3 = agent3
+        self.history = []
+        self.verbose = False
+        self.conversation_context = []
+        log_message('ConversationSystem initialized WITH MEMORY')
+        log_message(f'   Agent 1: {agent1.nombre}')
+        log_message(f'   Agent 2: {agent2.nombre}')
+        log_message(f'   Agent 3: {agent3.nombre}')
 
+    def _construir_contexto_agent1(self) -> str:
+        """Build the context prompt from previous conversation turns."""
+        if not self.conversation_context:
+            return 'No previous context. This is the first query.'
+        lineas = ['=' * 70, 'COMPLETE CONVERSATION HISTORY:', '=' * 70, '']
+        for i, msg in enumerate(self.conversation_context, 1):
+            role = 'User' if msg['role'] == 'user' else 'Assistant'
+            content = msg['content']
+            if msg['role'] == 'assistant' and len(content) > 300:
+                content = content[:300] + '... [complete response omitted]'
+            lineas.append(f'[Turn {i}] {role}:')
+            lineas.append(content)
+            lineas.append('')
+        lineas.extend(['=' * 70, 'CRITICAL PROCESSING INSTRUCTIONS:', '=' * 70, '1. ANALYZE the entire previous conversation history', '2. EXTRACT information already provided', '3. Do NOT ask again for information ALREADY in the history', '4. ACCUMULATE variables from ALL previous turns', '5. If the user repeats information, UPDATE/CONFIRM your record', '', 'ILLUSTRATIVE CONTEXT ACCUMULATION:', "- Turn 1: User says 'Valle del Cauca' -> Store the department", "- Turn 2: User says '2024' -> Store the period AND KEEP the department", "- Turn 3: User says 'ambos' -> Store FOB+Weight AND KEEP the period and department", '', '=' * 70, ''])
+        return '\n'.join(lineas)
 
-def database() -> sqlite3.Connection:
-    connection = sqlite3.connect(":memory:")
-    connection.row_factory = sqlite3.Row
-    connection.execute("CREATE TABLE exports (year INTEGER, destination TEXT, fob_usd REAL, net_weight_kg REAL)")
-    with (ROOT / "data/synthetic_exports.csv").open(encoding="utf8", newline="") as source:
-        rows = [(int(r["year"]), r["destination"], float(r["fob_usd"]), float(r["net_weight_kg"])) for r in csv.DictReader(source)]
-    connection.executemany("INSERT INTO exports VALUES (?, ?, ?, ?)", rows)
-    connection.commit()
-    connection.execute("PRAGMA query_only = ON")
-    return connection
-
-
-class Conversation:
-    """One instance per user conversation; only explicit follow-ups inherit context."""
-
-    def __init__(self, analyzer=None):
-        self.analyzer = analyzer or RuleAnalyzer()
-        self.previous = None
-
-    def process(self, text: str) -> dict:
-        analysis = self.analyzer.analyze(text, self.previous)
-        result = analysis.to_dict()
-        if analysis.query is None:
-            return result
-        sql, params = build_query(analysis.query)
-        connection = database()
-        try:
-            rows = [dict(row) for row in connection.execute(sql, params)]
-        finally:
-            connection.close()
-        self.previous = analysis.query
-        units = {"fob_usd": "USD", "net_weight_kg": "kg", "operations": "operations"}
-        unit = units[analysis.query.metric]
-        if not rows or rows[0]["value"] is None:
-            answer = "No matching synthetic records were found."
-        elif analysis.query.operation == "ranking":
-            answer = "; ".join(f"{row['destination']}: {row['value']:,.2f} {unit}" for row in rows)
-        else:
-            answer = f"The total is {rows[0]['value']:,.2f} {unit}."
-        result.update(sql=sql, parameters=params, rows=rows, answer=answer,
-                      data_source="Synthetic demonstration records; not official trade statistics")
-        return result
+    def _agent_necesita_input(self, output: str) -> bool:
+        """Detect whether the context agent requests more information."""
+        output_upper = output.upper()
+        if 'NECESITO_MAS_INFO' in output_upper:
+            if self.verbose:
+                log_message('Detected NECESITO_MAS_INFO')
+            return True
+        if 'PROCESANDO_CONSULTA' in output_upper:
+            if self.verbose:
+                log_message('Detected PROCESANDO_CONSULTA')
+            return False
+        if '?' in output:
+            if self.verbose:
+                log_message("Detected '?' - heuristic")
+            return True
+        if self.verbose:
+            log_message('No markers - continue')
+        return False

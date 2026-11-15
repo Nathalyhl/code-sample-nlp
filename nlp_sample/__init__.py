@@ -1,1 +1,1 @@
-"""A standalone applied NLP sample with an offline reference implementation."""
+"""Selected original thesis code, with separate review scaffolding."""
