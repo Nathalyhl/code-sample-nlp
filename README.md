@@ -13,7 +13,7 @@ Start with the actual conversation controller, then inspect the components it ca
 1. **[workflow.py](nlp_sample/workflow.py), `ConversationSystem.process`:** add the user's turn to history, build context, call the refinement agent, pause for missing information, hand off to Agent 2 and pass its response to Agent 3.
 2. **[analysis.py](nlp_sample/analysis.py), `AgentCore.invoke` and `_build_prompt_from_json`:** construct role-specific instructions and invoke a supplied language-model interface.
 3. **[analysis.py](nlp_sample/analysis.py), `_analizar_contexto` and `_detectar_agrupacion`:** inspect the original lexical helpers for rankings, averages and grouping dimensions.
-4. **[Agent configurations](prompts):** inspect selected original instructions for refinement, SQL work and results explanation.
+4. **[Agent configurations](https://github.com/Nathalyhl/code-sample-nlp/tree/main/prompts):** inspect selected original instructions for refinement, SQL work and results explanation.
 5. **[Worked example](docs/WALKTHROUGH.md):** follow two conversation turns and see precisely which steps come from original code, scripted fixtures and the excluded private SQL boundary.
 
 The sample contains **ten original methods** from two source files. Their control flow and compatibility identifiers are preserved; comments were omitted and selected presentation strings were translated. Formatting was expanded for readability. The [source map](docs/SOURCE_MAP.json) records original file ranges, hashes and selected instruction indices. Added review tools and the explicit SQL-exclusion guard are identified separately.
