@@ -1,7 +1,7 @@
 [project]
 name = "code-sample-nlp"
-version = "0.1.0"
-description = "Applied NLP, semantic extraction and conversational data access"
+version = "0.2.0"
+description = "Selected original chatbot and agent code from a joint master's project"
 requires-python = ">=3.11"
 dependencies = []
 

@@ -1,110 +1,84 @@
 # Code Sample NLP
 
-**Nathaly Henao Lugo · Applied natural language processing and end-to-end data systems**
+**Nathaly Henao Lugo · Applied NLP and conversational data systems**
 
-This repository presents selected code and research context from a collaborative master's project: an automated export-data platform with a conversational, multi-agent interface. It demonstrates how natural-language questions become structured analytical requests, validated database queries and understandable answers.
+This repository shares selected code from a collaborative master's project combining an automated export-data pipeline with a multi-agent chatbot. The chatbot analyzes natural-language questions, collects analytical parameters, prepares database queries and explains results for nontechnical users.
 
-The broader project connects data preparation and workflow orchestration with LLM-based language understanding. This sample makes the language-analysis and reasoning workflow easy to inspect and run, while presenting the architecture and methodology of the complete project. The full application and infrastructure remain in a separate private repository.
+The sample contains **eight methods selected from the original chatbot source and selected instructions from its three agents**. It presents the larger project's architecture while keeping the full application, institutional records and infrastructure separate. See the [source map](docs/SOURCE_MAP.json) for original file names, method ranges and source hashes.
 
-## Research and project context
+## The project and my contribution
 
-The project addressed a practical problem: analysts needed to explore historical Colombian export records without manually combining spreadsheets or writing every SQL query. The work covered two connected phases:
+The project addressed a practical analytical problem at the Cámara de Comercio de Cali: making historical Colombian export data easier to prepare, update and query. It connected two phases:
 
-1. **Data engineering:** inspect heterogeneous historical files, define a consistent schema, validate and transform records, automate monthly ingestion with Apache Airflow, and integrate S3, Glue and Redshift.
-2. **Applied NLP:** interpret user questions, collect missing context, extract analytical parameters, translate validated requests into SQL, and explain query results through a coordinated agent workflow.
+1. **Data preparation and automation:** inspect historical files, identify variables, standardize records and coordinate monthly ingestion and storage using Python, Apache Airflow and AWS services.
+2. **Conversational analytical access:** use pretrained language models and specialized agents to understand user requests, gather missing context, translate requests into SQL and present understandable answers.
 
-I contributed across both phases, including data preparation and automation, the conversational agents and their integration with the analytical workflow. The original research was conducted jointly with **Alejandro Perez Lugo and Mauricio Guzmán Arango**. See [authorship and provenance](NOTICE.md).
+I worked across both phases, including the data workflow, the chatbot's agents and their integration. The original research was conducted jointly with **Alejandro Perez Lugo and Mauricio Guzmán Arango**. The sample preserves that joint authorship and describes my participation without claiming sole ownership of the project.
 
-## Natural language processing and text analysis
+## What demonstrates NLP and text analysis
 
-The text being analyzed is the user's analytical question. The language-processing tasks include:
+The text being analyzed is the user's question. The project combines LLM-based interpretation with explicit context-handling and query-shaping code:
 
-| Task | What the system needs to understand |
+| Capability | Evidence in this sample |
 | --- | --- |
-| Intent interpretation | Whether a user requests a total or a ranking |
-| Information extraction | Period, metric, destination and ranking size |
-| Semantic normalization | Map surface wording onto an explicit analytical schema |
-| Ambiguity handling | Ask for clarification instead of inventing missing parameters |
-| Conversational context | Resolve an explicit follow-up against the previous request |
-| Semantic parsing | Convert the validated meaning into a database operation |
-| Grounded response generation | Explain only the results supplied by the query |
+| Configurable language-model instructions | Original prompt-construction method and selected configurations for three agents |
+| Interpretation of analytical intent | Original detection of totals, averages, rankings and grouping dimensions |
+| Structured meaning for database queries | Original helpers map wording onto query type, grouping column and ranking size |
+| Conversational context | Original context builder assembles previous turns for the first agent |
+| Clarification before progression | Original response-marker detection determines whether more input is needed |
+| Results communication | Selected original analyst-agent instructions require use of the supplied SQL results |
 
-The original system used pretrained LLMs through AWS Bedrock and an AgentCore-oriented deployment. This is experience applying language models and designing their surrounding workflow; it does not claim training a new foundation model.
-
-Text-to-SQL is an established semantic-parsing task in NLP; see [Deng et al., COLING 2022](https://aclanthology.org/2022.coling-1.190/). This project focuses on conversational analytical questions. Corpus-level document classification, topic modeling and sentiment analysis are outside the demonstrated task.
-
-## Explore the sample
-
-**Python 3.11 or later. The offline demo uses only the standard library.** After cloning the repository, run from its root:
-
-```sh
-python -m nlp_sample
-```
-
-Or try one question:
-
-```sh
-python -m nlp_sample "What was the FOB value of exports to Chile in 2023?"
-```
-
-The result includes the extracted meaning, SQL with bound parameters, synthetic rows and an answer:
-
-```json
-{
-  "start_year": 2023,
-  "end_year": 2023,
-  "metric": "fob_usd",
-  "operation": "total",
-  "destination": "Chile",
-  "top_k": 5
-}
-```
-
-The synthetic answer is **150,000.00 USD**. In the default multi-turn demo, “Now for 2024?” preserves the metric and destination and returns **195,000.00 USD**. Every displayed amount comes from 14 invented records supplied with this repository.
-
-The local version uses a **transparent rule-based reference analyzer created for this sample**. It performs real text analysis within a limited vocabulary. A separate `ModelAnalyzer` accepts a caller-supplied language-model function and validates structured output. The default demo and reported evaluation make **zero model calls**. The rule baseline and SQLite backend are new demonstration components; they are not presented as the original thesis's LLM or Redshift implementation.
+The original system applied pretrained LLMs through AWS Bedrock. The code sample does not claim that I trained a foundation model or that prompts guarantee factual correctness. The original lexical rules primarily recognize Spanish phrasing, as reflected in the retained search vocabulary.
 
 ## How the complete project fits together
 
 ```mermaid
 flowchart LR
-    A[DIAN export files] --> B[Airflow ingestion and validation]
-    B --> C[S3 and Parquet]
-    C --> D[Glue and Redshift]
-    U[User question] --> E[Context and refinement agent]
-    E --> F[SQL generation and validation]
+    A[DIAN export files] --> B[Python preparation and Airflow orchestration]
+    B --> C[S3, Parquet and Glue loading]
+    C --> D[Redshift analytical data]
+    U[User question] --> E[Agent 1: context and refinement]
+    E --> F[Agent 2: SQL generation and execution]
     F --> D
-    D --> G[Results interpretation agent]
+    D --> G[Agent 3: results interpretation]
     G --> H[Conversational interface]
 ```
 
-The sample provides a small executable path through the language-analysis, query and answer stages. The [project brief](docs/PROJECT_BRIEF.md) explains the wider system and the engineering decisions. The [research notes](docs/RESEARCH_NOTES.md) describe evaluation, limitations and further experiments.
+The [project brief](docs/PROJECT_BRIEF.md) explains the broader workflow and the [review notes](docs/RESEARCH_NOTES.md) explain the selected code and its limits. This repository exposes representative language-processing components rather than the entire platform.
 
 ## Code reading guide
 
-| File | What to inspect |
+| File | Origin and purpose |
 | --- | --- |
-| [analysis.py](nlp_sample/analysis.py) | Semantic representation, normalization, extraction, abstention and the LLM boundary |
-| [workflow.py](nlp_sample/workflow.py) | Conversation state, bounded query construction and evidence-based answers |
-| [context prompt](prompts/context.txt) | Instructions separating language interpretation from database execution |
-| [evaluate.py](nlp_sample/evaluate.py) | Exact semantic comparison, field accuracy, decision errors and category results |
-| [questions.jsonl](data/questions.jsonl) | Synthetic reference cases, including ambiguity and difficult paraphrases |
-| [tests](tests/test_sample.py) | Behavioral checks for context isolation, invalid model output and query execution |
+| [analysis.py](nlp_sample/analysis.py) | Five original `AgentCore` methods: configuration loading, prompt construction, model invocation, intent detection and grouping detection |
+| [workflow.py](nlp_sample/workflow.py) | Three original `ConversationSystem` methods: initialization, history construction and clarification detection |
+| [context configuration](prompts/context.txt) | Selected original instructions for the query-refinement agent; JSON stored as a text file |
+| [SQL agent configuration](prompts/sql_agent.json) | Selected original instructions linking validated parameters and natural-language intent to SQL |
+| [analyst configuration](prompts/analyst_agent.json) | Selected original instructions for explaining supplied query results |
+| [source map](docs/SOURCE_MAP.json) | Method-level provenance and the exact selected instruction indices |
 
-## Reproduce the evaluation
+The selected methods retain the original control flow and identifiers. Comments were omitted, formatting was normalized, and docstrings, diagnostic messages and prompt presentation text were translated to English. Spanish database identifiers, protocol markers and matching vocabulary remain for compatibility. The source-selection process checked the published methods against the original syntax trees after reversing those text translations.
+
+## Inspect and run the selected helpers
+
+With Python 3.11 or later, run from the repository root:
 
 ```sh
+python -m nlp_sample
 python -m unittest discover -s tests -v
-python -m nlp_sample.evaluate --check
 python scripts/check_publication.py
 ```
 
-The checked-in [evaluation report](reports/evaluation.json) records **32 exact matches out of 36 synthetic cases (88.89%)** for the offline rules. Four difficult paraphrases produce clarification instead of a complete extraction. Every prediction and reference label is retained, including the failures. These are diagnostic examples authored alongside the sample, not an independently held-out benchmark or a measurement of the thesis's LLM accuracy.
+The local demonstration invokes the **original intent/grouping helpers** on an illustrative question such as `top 5 productos en 2024`, builds conversational context and exercises the original model-invocation method with a visibly labeled test double. It makes no AWS, database or language-model call. It reports the helpers' actual computed outputs, not export statistics or a simulated research score.
 
-The regression suite checks software behavior; the diagnostic corpus checks text interpretation. Passing one does not establish the other. GitHub Actions runs the tests, demo, report-reproduction check and publication scan on Python 3.11, 3.12 and 3.13.
+The entry point, small logging adapter and tests are review scaffolding added around the selected source; they are identified as such. The complete SQL executor and the full conversation `process` method are deliberately outside the excerpt, so this is not a replacement for the complete application.
 
-## Scope and access
+## Examples and evidence
 
-Included material is intentionally sufficient to understand the overall project and review representative NLP code. The original ingestion implementation, deployment configuration, full database schema, institutional records, thesis document and cloud credentials are outside this repository. A fresh history keeps those materials separate.
+[Illustrative questions](data/questions.jsonl) describe how a reviewer might examine the workflow. They are newly written, synthetic inputs, not institutional conversations or captured model predictions. No trade totals, model-accuracy percentage or benchmark result is asserted.
 
-The repository is prepared for private academic review. No open-source license has been selected. Please preserve the joint authorship and contact the authors before redistributing or reusing the material.
+The tests exercise the selected code using controlled inputs and test doubles. They check implementation behavior and excerpt integrity, not language-model quality. GitHub Actions runs the checks on Python 3.11, 3.12 and 3.13. Broader NLP evaluation would require independently labeled questions, actual model runs and a separate evaluation protocol.
+
+## Authorship and access
+
+See [NOTICE.md](NOTICE.md) for joint authorship and the distinction between original source and later editorial packaging. The full thesis, full project source, real datasets, credentials and deployment settings are excluded. The repository remains private for academic review. No open-source license has been selected; please contact the authors before redistribution or reuse.
