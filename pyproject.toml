@@ -1,0 +1,9 @@
+[project]
+name = "code-sample-nlp"
+version = "0.1.0"
+description = "Applied NLP, semantic extraction and conversational data access"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.ruff.lint]
+select = ["F"]
